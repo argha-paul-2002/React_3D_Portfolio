@@ -30,6 +30,17 @@ const Computers = ({ isMobile }) => {
 
 const ComputersCanvas = () => {
   const [isMobile, setIsMobile] = useState(false)
+
+   // State to manage the cursor style
+   const [isGrabbing, setIsGrabbing] = useState(false);
+
+   // Event handlers to toggle the cursor state
+   const handleMouseDown = () => setIsGrabbing(true);
+   const handleMouseUp = () => setIsGrabbing(false);
+ 
+   // Compute the className based on whether the mouse is down or not
+   const cursorClassName = isGrabbing ? 'cursor-grabbing' : 'cursor-grab';
+
   useEffect(() => {
 
     // Add a listener for changes to the screen size
@@ -55,6 +66,10 @@ const ComputersCanvas = () => {
       shadows
       camera={{ position: [20, 3, 5], fov: 25 }}
       gl={{preserveDrawingBuffer: true}}
+      className={cursorClassName}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
     >
       <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
