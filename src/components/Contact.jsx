@@ -13,9 +13,37 @@ const Contact = () => {
 
   const [loading, setLoading] = useState(false)
 
-  const handleChange = (e) => {}
+  const handleChange = (e) => {
+    const {name, value} = e.target;
 
-  const handleSubmit = (e) => {}
+    setForm({ ...form, [name]: value });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true)
+    emailjs.send(
+      process.env.REACT_APP_SERVICE_ID, 
+      'template_xu93gyi',
+      {
+        from_name: form.name,
+        to_name: 'Argha',
+        from_email: form.email,
+        to_email: 'arghapaul2020@gmail.com',
+        message: form.message
+      },
+      '96uR7BTcv26sBGUhe'
+     )
+     .then(()=>{
+        setLoading(false)
+        alert('Thank you for your message. I will get back to you soon.')
+        setForm({ name: '', email: '', message: '' })
+     },(error)=>{
+        setLoading(false)
+        alert('Sorry, something went wrong. Please try again later.')
+        console.error(error)
+     })
+  }
 
   return (
     <div className="xl:mt-12 xl:flex-row flex-col-reverse flex gap-10 overflow-hidden">
@@ -35,7 +63,8 @@ const Contact = () => {
             <span className="text-white font-medium mb-4">Your Name</span>
             <input 
               type="text" 
-              name="name" 
+              name="name"
+              required 
               value={form.name} 
               onChange={handleChange} 
               placeholder="Name" 
@@ -48,6 +77,7 @@ const Contact = () => {
             <input 
               type="email" 
               name="email" 
+              required
               value={form.email} 
               onChange={handleChange} 
               placeholder="Email" 
@@ -60,6 +90,7 @@ const Contact = () => {
             <textarea
               rows={7} 
               name="message" 
+              required
               value={form.message} 
               onChange={handleChange} 
               placeholder="Leave a message" 
