@@ -86,4 +86,4 @@ const Contact = () => {
   )
 }
 
-export default SectionWrapper(Contact, 'Contact')
+export default SectionWrapper(Contact, 'contact')
